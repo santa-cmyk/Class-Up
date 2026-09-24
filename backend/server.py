@@ -638,7 +638,7 @@ async def import_bulk(payload: BulkImport, user=Depends(get_current_user)):
     for r in payload.resources:
         if not r.get("url") or not r.get("title") or not r.get("area"):
             continue
-        vid = r["url"].split("v=")[-1].split("&")[0] if "youtube" in r["url"] else None
+        vid = r["url"].split("v=")[-1].split("&")[0] if "watch?v=" in r["url"] else None
         doc = {
             "id": r.get("id") or str(uuid.uuid4()),
             "title": r["title"],

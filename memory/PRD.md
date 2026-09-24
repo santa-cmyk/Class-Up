@@ -48,3 +48,17 @@ Colecciones: `users`, `user_sessions` (TTL), `tasks`, `grades`, `study_sessions`
 
 ## Estado de testing
 - Backend: 40/40 pytest en verde (auth, onboarding obligatorio, tasks, grades, sessions, resources, progress, aislamiento entre usuarios, logout).
+
+## Datos de prueba cargados (2026-09-24)
+Importados vía `POST /api/import/bulk` desde `class_up_datos_demo.json` (replace=false) para el estudiante demo (`user_test123` / TEST_TOKEN_123):
+- **20 tareas** (estados pendiente/completada, prioridades alta/media/baja)
+- **20 calificaciones** (promedio general 4.27, repartidas en las 5 materias)
+- **20 eventos de calendario** (colección `events` nueva: entrega/evaluación/examen/evento)
+- **75 recursos** (15 por cada materia; globales, no por estudiante)
+- **Perfil demo**: Juan David Martínez · 9°A · Jornada Tarde · Acudiente María Martínez
+
+## Nuevas funciones (iteración 3)
+- `PATCH /api/profile` — editar sección/jornada/acudiente sin repetir onboarding (app/profile-edit.tsx)
+- Aviso de entregas < 24h en Inicio (banner ámbar; rojo si vencida)
+- Materia unificada: "Sociales" (antes "Sociales y Ciudadanas")
+- Calendario muestra tareas + eventos + sesiones de estudio
