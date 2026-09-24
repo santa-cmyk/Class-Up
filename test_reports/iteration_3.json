@@ -1,0 +1,45 @@
+{
+  "summary": "Iteration 3 — full functional audit for Class Up · El Castillo. Added /app/backend/tests/test_iteration_3_audit.py (22 new tests) covering: /auth/me demo profile (Juan David Martínez, section=A, jornada=Tarde, guardian María Martínez/3000000000, both onboarding flags true); MongoDB counts (26 tasks, 25 grades, 23 events, 98 resources) — all match spec; no `_id` leaks on any GET (auth/me, tasks, grades, grades/summary, events, resources, progress, assessments, sessions, sessions/summary); Tasks CRUD lifecycle with due_date=today + ~2h and propagation to /progress (tasks_total/completed/pending); Grades create → summary recomputes with per-subject count → delete restores overall exactly; Events count = 23, create → 24, wrong-owner delete = 404, delete → 23; Resources filter (Todos = 98, Matemáticas = 21, Sociales = 19, legacy 'Sociales y Ciudadanas' = 0 — rename fully complete); PATCH /api/profile uppercases section 'b'→'B', preserves profile_setup_completed & initial_assessment_completed, rejects empty body with 'Sin cambios' and empty required field with 400 (section restored to 'A' in teardown); fresh audit user (user_fresh_audit / TOKEN_FRESH_AUDIT) walks the mandatory-onboarding gates (a→d), then is fully deleted; POST /api/import/bulk empty → zero counts, 1-of-each persists in Mongo & does NOT touch profile flags (test rows are cleaned up); cross-user isolation — fresh user cannot see any of user_test123's tasks/grades/events. Also fixed pre-existing test suites to reflect the renamed subject 'Sociales' (was 'Sociales y Ciudadanas') and made test_classup_backend.py restore user_test123's demo profile in module teardown so the demo data remains pristine after every run. Full suite: 62/62 passing (18 iter-1 + 22 iter-2 + 22 iter-3). Frontend smoke test on https://study-castle.preview.emergentagent.com/ with Bearer TEST_TOKEN_123: Home greets 'Buenos días, Juan David Martínez / Grado 9° · A', 'Entrega próxima' banner shows 'Entregar ensayo · vence en 3 h' (due-soon logic OK), stat cards show PROMEDIO 4.3 / TAREAS 1/26 / ESTUDIO 95 min. Tasks screen lists 25 pendientes with subject color chips (Matemáticas green, Lectura Crítica pink, etc.). Calendar shows dots on 26/27/28/29/30. Grades shows overall 4.3 with per-subject breakdown (Sociales, Matemáticas, Lectura Crítica, Inglés, Ciencias Naturales). Resources filters (Todos/Lectura Crítica/Matemáticas/Sociales/…) render correctly. Profile 'MIS DATOS' shows Sección 9°A, Jornada Tarde, guardian María Martínez, phone 3000000000. Deprecated packages detected: `shadow*` React Native style props are deprecated (migrate to `boxShadow`). No SafeAreaView issues detected. Demo data preserved after all writes.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": [
+      {"component": "shadow* style props", "issue": "Console spams 'shadow*' style props are deprecated. Use 'boxShadow' — appears on every screen render. RN 0.76+ deprecates individual shadowColor/shadowOffset/shadowRadius/shadowOpacity. Migrate to unified boxShadow. Reference: various StyleSheet.create({...}) blocks across /app/frontend/app/**"}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_classup_backend.py",
+    "/app/backend/tests/test_mandatory_onboarding.py",
+    "/app/backend/tests/test_iteration_3_audit.py",
+    "/app/backend/tests/conftest.py",
+    "/app/test_reports/pytest/pytest_results.xml",
+    "/app/test_reports/pytest/iter3_audit.xml"
+  ],
+  "action_items": [
+    "Migrate all StyleSheet blocks that use shadowColor/shadowOffset/shadowRadius/shadowOpacity to the unified `boxShadow` property (RN 0.76+ deprecation). Affects every screen — console shows the warning repeatedly.",
+    "Consider migrating @app.on_event('startup'/'shutdown') in /app/backend/server.py to FastAPI's lifespan context manager (carry-over from iter 1/2).",
+    "Enforce Enum/Literal on `jornada` (Mañana/Tarde/Única) in ProfileSetup and ProfileUpdate to prevent free-text typos (carry-over from iter 2).",
+    "Optional hardening: add Pydantic min_length/max_length constraints on name / guardian_name / phones to prevent abuse."
+  ],
+  "critical_code_review_comments": [
+    "server.py PATCH /api/profile: `payload.model_dump(exclude_none=True)` strips None but keeps empty strings, so empty-string on a required field is correctly rejected. However pydantic parses an unset key as None (excluded), so `PATCH /api/profile {\"section\":\"\"}` currently returns 'Campo obligatorio: section' which is the intended behaviour. Confirmed by test.",
+    "server.py bulk import: resources upsert uses `url` as the key, which is correct, and the new endpoint does not mutate profile_setup_completed / initial_assessment_completed even if `profile` sub-payload is provided — behaviour confirmed by test.",
+    "The 404 console errors on /resources are for external YouTube thumbnail images (mqdefault.jpg not available for some video IDs) — cosmetic, non-blocking. Consider a fallback thumbnail in the Resource component."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration_3_audit.py (NEW — 22 iter-3 cases)",
+    "/app/backend/tests/test_mandatory_onboarding.py (subject rename Sociales y Ciudadanas → Sociales)",
+    "/app/backend/tests/test_classup_backend.py (subject rename + module teardown restores demo profile so user_test123 stays pristine)"
+  ],
+  "success_rate": {"backend": "100% (62/62)", "frontend": "100% smoke (Home, Tasks, Grades, Calendar, Resources, Profile all render with correct demo data)"},
+  "seed_data_creation": "Fresh audit user (user_fresh_audit / TOKEN_FRESH_AUDIT / fresh_audit@test.local) is created at the start of the iter-3 module and fully deleted (users, sessions, tasks, grades, events) at teardown. All test-write rows on user_test123 (TEST_bulk_*, TEST_iter3_*) are cleaned up after each test class. Existing iter-1/2 users (user_test123, user_test_secondary, user_mandatory_test, TOKEN_LOGOUT) preserved.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Three test modules now: test_classup_backend.py (uses TEST_TOKEN_123), test_mandatory_onboarding.py (uses TEST_TOKEN_MANDATORY), test_iteration_3_audit.py (uses TEST_TOKEN_123 for read/CRUD + TOKEN_FRESH_AUDIT for onboarding). Under pytest.ini's `-n 2 --dist loadscope` these run safely on separate workers. IMPORTANT: subject rename is now 'Sociales' (not 'Sociales y Ciudadanas'); resources currently: 21 Matemáticas, 19 Sociales, 98 total; demo user_test123 currently: 26 tasks / 25 grades / 23 events; assessments_opened MUST contain the new SUBJECTS list. If you touch user_test123's profile, always restore it in teardown to Juan David Martínez / A / Tarde / María Martínez / 3000000000 / both flags true. BASE_URL is EXPO_PUBLIC_BACKEND_URL from /app/frontend/.env.",
+  "rca_of_issue": "N/A — no bugs found. Iteration 3 implementation is correct: /api/events added, /api/profile PATCH gated on profile_setup_completed and never resets onboarding flags, /api/import/bulk validates & inserts without touching flags, subject rename 'Sociales y Ciudadanas' → 'Sociales' is complete across seeds, resources & assessments. UI action → API call → MongoDB write → GET propagation confirmed for Tasks (with /progress update), Grades (with /grades/summary recompute), Events (list length changes), and Profile (auth/me reflects the patch)."
+}

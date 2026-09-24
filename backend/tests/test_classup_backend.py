@@ -34,6 +34,33 @@ def _reseed_primary_session():
     asyncio.run(go())
 
 
+def _restore_primary_demo_profile():
+    """Restore the demo profile fields so tests do not mutate the demo data."""
+    async def go():
+        c = AsyncIOMotorClient(os.environ["MONGO_URL"])
+        db = c[os.environ["DB_NAME"]]
+        await db.users.update_one(
+            {"user_id": TEST_USER_ID},
+            {"$set": {
+                "name": "Juan David Martínez",
+                "section": "A",
+                "jornada": "Tarde",
+                "birth_date": "2010-05-15",
+                "student_phone": "3000000000",
+                "guardian_name": "María Martínez",
+                "guardian_phone": "3000000000",
+                "profile_setup_completed": True,
+                "initial_assessment_completed": True,
+                "assessments_opened": [
+                    "Lectura Crítica", "Matemáticas", "Sociales",
+                    "Ciencias Naturales", "Inglés",
+                ],
+            }},
+        )
+        c.close()
+    asyncio.run(go())
+
+
 def _ensure_second_user():
     async def go():
         c = AsyncIOMotorClient(os.environ["MONGO_URL"])
@@ -71,8 +98,10 @@ def _setup_module():
     _reseed_primary_session()
     _ensure_second_user()
     yield
-    # final cleanup: recreate primary session so any subsequent runs / manual checks work
+    # final cleanup: recreate primary session AND restore the demo profile so
+    # the demo remains intact for the user's next screenshot / interactive test.
     _reseed_primary_session()
+    _restore_primary_demo_profile()
 
 
 # ---------------------------------------------------------------------------
@@ -126,7 +155,7 @@ class TestAuthMe:
 # ---------------------------------------------------------------------------
 # Assessments
 # ---------------------------------------------------------------------------
-EXPECTED_SUBJECTS = {"Lectura Crítica", "Matemáticas", "Sociales y Ciudadanas", "Ciencias Naturales", "Inglés"}
+EXPECTED_SUBJECTS = {"Lectura Crítica", "Matemáticas", "Sociales", "Ciencias Naturales", "Inglés"}
 
 
 class TestAssessments:

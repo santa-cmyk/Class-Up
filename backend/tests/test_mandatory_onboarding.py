@@ -33,7 +33,7 @@ MAND_EMAIL = "mandatory@classup.local"
 SUBJECTS = [
     "Lectura Crítica",
     "Matemáticas",
-    "Sociales y Ciudadanas",
+    "Sociales",
     "Ciencias Naturales",
     "Inglés",
 ]
@@ -221,7 +221,7 @@ class TestMandatoryOnboarding:
         assert "Faltan evaluaciones por abrir" in detail
         for opened in ("Matemáticas", "Inglés"):
             assert opened not in detail, f"opened subject '{opened}' should not appear in missing list: {detail}"
-        for missing in ("Lectura Crítica", "Sociales y Ciudadanas", "Ciencias Naturales"):
+        for missing in ("Lectura Crítica", "Sociales", "Ciencias Naturales"):
             assert missing in detail
 
     def test_07_happy_path_full_onboarding(self, client):

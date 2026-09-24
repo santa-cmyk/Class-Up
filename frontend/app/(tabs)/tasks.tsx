@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView,
   StyleSheet, Text, TextInput, View,
@@ -8,7 +8,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { api } from "@/src/api/client";
 import { Icon } from "@/src/components/icon";
-import { SubjectIcon } from "@/src/components/subject-icon";
 import { colors, radius, spacing, subjectColor } from "@/src/theme";
 
 type Task = {
@@ -157,9 +156,6 @@ function TaskFormModal({
   const [priority, setPriority] = useState<(typeof PRIORITIES)[number]>((initial?.priority as any) ?? "media");
   const [description, setDescription] = useState(initial?.description ?? "");
 
-  // reset on open
-  useState(() => { /* noop for first mount */ });
-
   // Re-init whenever the modal is (re)opened with a different initial
   useUpdateEffect(() => {
     setTitle(initial?.title ?? "");
@@ -263,7 +259,6 @@ function TaskFormModal({
 }
 
 // Tiny helper: runs the effect after mount only when deps change.
-import { useEffect, useRef } from "react";
 function useUpdateEffect(cb: () => void, deps: any[]) {
   const mounted = useRef(false);
   useEffect(() => {
