@@ -14,7 +14,7 @@ import { colors, radius, spacing, subjectColor } from "@/src/theme";
 type Grade = { id: string; subject: string; activity: string; period: string; score: number };
 type Summary = { overall: number; per_subject: { subject: string; average: number; count: number }[]; total_entries: number };
 
-const SUBJECTS = ["Lectura Crítica", "Matemáticas", "Sociales y Ciudadanas", "Ciencias Naturales", "Inglés", "Otra"];
+const SUBJECTS = ["Lectura Crítica", "Matemáticas", "Sociales", "Ciencias Naturales", "Inglés", "Otra"];
 const PERIODS = ["P1", "P2", "P3", "P4"];
 
 export default function GradesScreen() {

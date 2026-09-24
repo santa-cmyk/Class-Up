@@ -50,7 +50,7 @@ app.add_middleware(
 SUBJECTS = [
     "Lectura Crítica",
     "Matemáticas",
-    "Sociales y Ciudadanas",
+    "Sociales",
     "Ciencias Naturales",
     "Inglés",
 ]
@@ -58,7 +58,7 @@ SUBJECTS = [
 ASSESSMENT_FORMS = {
     "Lectura Crítica": "https://docs.google.com/forms/d/e/1FAIpQLSexGYQmE6JBEBlElY6KKM1o4Q0h_d3q96Bv8M9TaB_8nz3iUg/viewform?pli=1",
     "Matemáticas": "https://docs.google.com/forms/d/e/1FAIpQLSfNHlslXao6BCRWby38muPa0aguaRvDmQW34iwHcdRbn845BQ/viewform",
-    "Sociales y Ciudadanas": "https://docs.google.com/forms/d/e/1FAIpQLSdDnTWm_FN_QHKXWvbiFRQ6VaWRNrEhV5OaxnyF6JfX0i2Rxw/viewform",
+    "Sociales": "https://docs.google.com/forms/d/e/1FAIpQLSdDnTWm_FN_QHKXWvbiFRQ6VaWRNrEhV5OaxnyF6JfX0i2Rxw/viewform",
     "Ciencias Naturales": "https://docs.google.com/forms/d/e/1FAIpQLSfYYd_tAdPuiqmOzuu8IhvSiMvkxARQcIvkPv2CY54mqM2aEQ/viewform",
     "Inglés": "https://docs.google.com/forms/d/e/1FAIpQLSe7Gah_r2LSScH5A6Cf4wino69scgdwVdtlt5gcMYO7ZovCiw/viewform",
 }
@@ -105,6 +105,16 @@ class ProfileSetup(BaseModel):
     guardian_name: str
     guardian_phone: str
     student_phone: Optional[str] = ""
+
+
+class ProfileUpdate(BaseModel):
+    name: Optional[str] = None
+    section: Optional[str] = None
+    jornada: Optional[str] = None
+    birth_date: Optional[str] = None
+    student_phone: Optional[str] = None
+    guardian_name: Optional[str] = None
+    guardian_phone: Optional[str] = None
 
 
 class SessionExchange(BaseModel):
@@ -188,6 +198,37 @@ class Resource(BaseModel):
     difficulty: str = "basico"  # basico | intermedio | avanzado
     url: str
     thumbnail: Optional[str] = None
+
+
+class CalendarEvent(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    title: str
+    date: str                       # ISO YYYY-MM-DD
+    time: Optional[str] = None      # HH:MM
+    type: str = "evento"            # clase | examen | evento | personal | otro
+    subject: Optional[str] = None
+    description: Optional[str] = ""
+    created_at: datetime = Field(default_factory=now_utc)
+
+
+class CalendarEventCreate(BaseModel):
+    title: str
+    date: str
+    time: Optional[str] = None
+    type: str = "evento"
+    subject: Optional[str] = None
+    description: Optional[str] = ""
+
+
+class BulkImport(BaseModel):
+    """Payload for POST /api/import/bulk. All arrays are optional."""
+    profile: Optional[ProfileUpdate] = None
+    tasks: List[TaskCreate] = Field(default_factory=list)
+    grades: List[GradeCreate] = Field(default_factory=list)
+    events: List[CalendarEventCreate] = Field(default_factory=list)
+    resources: List[dict] = Field(default_factory=list)  # loose: uses seed shape
+    replace: bool = False  # if true, wipes the student's existing tasks/grades/events before import
 
 
 class AssessmentOpen(BaseModel):
@@ -370,6 +411,34 @@ async def profile_setup(payload: ProfileSetup, user=Depends(get_current_user)):
     return fresh
 
 
+@api.patch("/profile")
+async def profile_update(payload: ProfileUpdate, user=Depends(get_current_user)):
+    """Edit profile fields after onboarding without touching the setup flags."""
+    if not user.get("profile_setup_completed"):
+        raise HTTPException(status_code=400, detail="Debes completar el onboarding primero")
+
+    data = payload.model_dump(exclude_none=True)
+    editable = {"name", "section", "jornada", "birth_date", "student_phone", "guardian_name", "guardian_phone"}
+    updates: dict = {}
+    for k, v in data.items():
+        if k not in editable:
+            continue
+        val = v.strip() if isinstance(v, str) else v
+        if k == "section" and isinstance(val, str):
+            val = val.upper()
+        # For required-in-setup fields, empty strings are rejected.
+        if k in {"name", "section", "jornada", "birth_date", "guardian_name", "guardian_phone"} and not val:
+            raise HTTPException(status_code=400, detail=f"Campo obligatorio: {k}")
+        updates[k] = val
+
+    if not updates:
+        raise HTTPException(status_code=400, detail="Sin cambios")
+
+    await db.users.update_one({"user_id": user["user_id"]}, {"$set": updates})
+    fresh = await db.users.find_one({"user_id": user["user_id"]}, {"_id": 0})
+    return fresh
+
+
 # ---------------------------------------------------------------------------
 # Tasks
 # ---------------------------------------------------------------------------
@@ -484,6 +553,118 @@ async def list_resources(area: Optional[str] = None):
 
 
 # ---------------------------------------------------------------------------
+# Calendar events
+# ---------------------------------------------------------------------------
+@api.get("/events", response_model=List[CalendarEvent])
+async def list_events(user=Depends(get_current_user)):
+    docs = await db.events.find({"user_id": user["user_id"]}, {"_id": 0}).sort("date", 1).to_list(500)
+    return [CalendarEvent(**d) for d in docs]
+
+
+@api.post("/events", response_model=CalendarEvent)
+async def create_event(payload: CalendarEventCreate, user=Depends(get_current_user)):
+    ev = CalendarEvent(user_id=user["user_id"], **payload.model_dump())
+    await db.events.insert_one(ev.model_dump())
+    return ev
+
+
+@api.delete("/events/{event_id}")
+async def delete_event(event_id: str, user=Depends(get_current_user)):
+    res = await db.events.delete_one({"id": event_id, "user_id": user["user_id"]})
+    if res.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Event not found")
+    return {"ok": True}
+
+
+# ---------------------------------------------------------------------------
+# Bulk import (loads a JSON snapshot for the authenticated student)
+# ---------------------------------------------------------------------------
+@api.post("/import/bulk")
+async def import_bulk(payload: BulkImport, user=Depends(get_current_user)):
+    summary: dict = {}
+    user_id = user["user_id"]
+
+    # 1) Profile (optional) — same rules as PATCH /profile
+    if payload.profile is not None:
+        data = payload.profile.model_dump(exclude_none=True)
+        editable = {"name", "section", "jornada", "birth_date", "student_phone", "guardian_name", "guardian_phone"}
+        updates: dict = {}
+        for k, v in data.items():
+            if k not in editable:
+                continue
+            val = v.strip() if isinstance(v, str) else v
+            if k == "section" and isinstance(val, str):
+                val = val.upper()
+            if k in {"name", "section", "jornada", "birth_date", "guardian_name", "guardian_phone"} and not val:
+                raise HTTPException(status_code=400, detail=f"Campo obligatorio en perfil: {k}")
+            updates[k] = val
+        if updates:
+            await db.users.update_one({"user_id": user_id}, {"$set": updates})
+        summary["profile_updated"] = bool(updates)
+
+    # 2) Optional wipe of the student's per-user data before import
+    if payload.replace:
+        for col in ("tasks", "grades", "events"):
+            await db[col].delete_many({"user_id": user_id})
+        summary["replaced"] = True
+
+    # 3) Tasks
+    tasks_docs = [
+        Task(user_id=user_id, **t.model_dump()).model_dump() for t in payload.tasks
+    ]
+    if tasks_docs:
+        await db.tasks.insert_many(tasks_docs)
+    summary["tasks_inserted"] = len(tasks_docs)
+
+    # 4) Grades
+    grades_docs = [
+        Grade(user_id=user_id, **g.model_dump()).model_dump() for g in payload.grades
+    ]
+    if grades_docs:
+        await db.grades.insert_many(grades_docs)
+    summary["grades_inserted"] = len(grades_docs)
+
+    # 5) Events
+    events_docs = [
+        CalendarEvent(user_id=user_id, **e.model_dump()).model_dump() for e in payload.events
+    ]
+    if events_docs:
+        await db.events.insert_many(events_docs)
+    summary["events_inserted"] = len(events_docs)
+
+    # 6) Resources (upsert by url, global — not tied to a student)
+    res_inserted = 0
+    res_updated = 0
+    for r in payload.resources:
+        if not r.get("url") or not r.get("title") or not r.get("area"):
+            continue
+        vid = r["url"].split("v=")[-1].split("&")[0] if "youtube" in r["url"] else None
+        doc = {
+            "id": r.get("id") or str(uuid.uuid4()),
+            "title": r["title"],
+            "area": r["area"],
+            "grade": int(r.get("grade") or 9),
+            "topic": r.get("topic", ""),
+            "subtopic": r.get("subtopic", ""),
+            "type": r.get("type", "video"),
+            "difficulty": r.get("difficulty", "basico"),
+            "url": r["url"],
+            "thumbnail": r.get("thumbnail") or (f"https://img.youtube.com/vi/{vid}/mqdefault.jpg" if vid else None),
+        }
+        existing = await db.resources.find_one({"url": doc["url"]}, {"_id": 0})
+        if existing:
+            await db.resources.update_one({"url": doc["url"]}, {"$set": doc})
+            res_updated += 1
+        else:
+            await db.resources.insert_one(doc)
+            res_inserted += 1
+    summary["resources_inserted"] = res_inserted
+    summary["resources_updated"] = res_updated
+
+    return summary
+
+
+# ---------------------------------------------------------------------------
 # Progress
 # ---------------------------------------------------------------------------
 @api.get("/progress")
@@ -529,11 +710,11 @@ RESOURCE_SEED = [
     ("Ecuaciones cuadráticas", "Matemáticas", "Álgebra", "Fórmula general", "intermedio", "https://www.youtube.com/watch?v=SDe-1lGeS0U"),
     ("Trigonometría 9°", "Matemáticas", "Trigonometría", "Razones trigonométricas", "intermedio", "https://www.youtube.com/watch?v=F21S9Wpi0y8"),
     ("Estadística básica", "Matemáticas", "Estadística", "Media, mediana, moda", "basico", "https://www.youtube.com/watch?v=uhxtUt_-GyM"),
-    # Sociales y Ciudadanas
-    ("Constitución de Colombia 1991", "Sociales y Ciudadanas", "Cívica", "Estructura del Estado", "basico", "https://www.youtube.com/watch?v=hxs4Wc9BQPk"),
-    ("Historia de Colombia siglo XX", "Sociales y Ciudadanas", "Historia", "Violencia y Frente Nacional", "intermedio", "https://www.youtube.com/watch?v=39G7pQ9ftbc"),
-    ("Democracia y participación", "Sociales y Ciudadanas", "Cívica", "Mecanismos de participación", "basico", "https://www.youtube.com/watch?v=uUCP5AzS5Sk"),
-    ("Geografía de Colombia", "Sociales y Ciudadanas", "Geografía", "Regiones naturales", "basico", "https://www.youtube.com/watch?v=Xh6bJXAPT4M"),
+    # Sociales
+    ("Constitución de Colombia 1991", "Sociales", "Cívica", "Estructura del Estado", "basico", "https://www.youtube.com/watch?v=hxs4Wc9BQPk"),
+    ("Historia de Colombia siglo XX", "Sociales", "Historia", "Violencia y Frente Nacional", "intermedio", "https://www.youtube.com/watch?v=39G7pQ9ftbc"),
+    ("Democracia y participación", "Sociales", "Cívica", "Mecanismos de participación", "basico", "https://www.youtube.com/watch?v=uUCP5AzS5Sk"),
+    ("Geografía de Colombia", "Sociales", "Geografía", "Regiones naturales", "basico", "https://www.youtube.com/watch?v=Xh6bJXAPT4M"),
     # Ciencias Naturales
     ("Célula: estructura y función", "Ciencias Naturales", "Biología", "Organelos", "basico", "https://www.youtube.com/watch?v=URUJD5NEXC8"),
     ("Genética mendeliana", "Ciencias Naturales", "Biología", "Leyes de Mendel", "intermedio", "https://www.youtube.com/watch?v=CBezq1fFUEA"),
@@ -558,6 +739,7 @@ async def startup() -> None:
         await db.tasks.create_index([("user_id", 1), ("created_at", -1)])
         await db.grades.create_index([("user_id", 1), ("subject", 1)])
         await db.study_sessions.create_index([("user_id", 1), ("created_at", -1)])
+        await db.events.create_index([("user_id", 1), ("date", 1)])
         await db.resources.create_index("id", unique=True)
     except Exception as exc:
         logger.warning("Index creation warning: %s", exc)

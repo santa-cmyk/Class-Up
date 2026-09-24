@@ -57,7 +57,7 @@ export const radius = { sm: 6, md: 12, lg: 20, pill: 999 };
 export const subjectColors: Record<string, { bg: string; fg: string; solid: string }> = {
   "Lectura Crítica": { bg: "#FFEDD5", fg: "#9A3412", solid: "#F97316" },
   "Matemáticas": { bg: "#D1FAE5", fg: "#065F46", solid: "#10B981" },
-  "Sociales y Ciudadanas": { bg: "#FEF3C7", fg: "#92400E", solid: "#F59E0B" },
+  "Sociales": { bg: "#FEF3C7", fg: "#92400E", solid: "#F59E0B" },
   "Ciencias Naturales": { bg: "#CCFBF1", fg: "#115E59", solid: "#14B8A6" },
   "Inglés": { bg: "#FCE7F3", fg: "#9D174D", solid: "#EC4899" },
 };

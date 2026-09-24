@@ -16,7 +16,7 @@ type Task = {
   due_date?: string; due_time?: string; priority: string; completed: boolean;
 };
 
-const SUBJECTS = ["Lectura Crítica", "Matemáticas", "Sociales y Ciudadanas", "Ciencias Naturales", "Inglés", "Otra"];
+const SUBJECTS = ["Lectura Crítica", "Matemáticas", "Sociales", "Ciencias Naturales", "Inglés", "Otra"];
 const PRIORITIES = ["alta", "media", "baja"] as const;
 const FILTERS = ["Todas", "Pendientes", "Completadas"] as const;
 

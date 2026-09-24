@@ -20,20 +20,20 @@ function AuthGate({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (loading) return;
     const first = segments[0] ?? "";
-    const inTabs = first === "(tabs)";
-    const onOnboarding = first === "onboarding";
     const onLogin = first === "" || first === "index";
+    const onOnboarding = first === "onboarding";
 
     if (!user) {
       if (!onLogin) router.replace("/");
       return;
     }
     const needsSetup = !user.profile_setup_completed || !user.initial_assessment_completed;
-    if (needsSetup && !onOnboarding) {
-      router.replace("/onboarding");
+    if (needsSetup) {
+      if (!onOnboarding) router.replace("/onboarding");
       return;
     }
-    if (!needsSetup && !inTabs) {
+    // Fully configured: keep out of /login and /onboarding only.
+    if (onLogin || onOnboarding) {
       router.replace("/(tabs)");
     }
   }, [loading, user, segments, router]);

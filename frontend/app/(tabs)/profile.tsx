@@ -48,6 +48,17 @@ export default function ProfileScreen() {
         <Row icon="timer" title="Temporizador" onPress={() => router.push("/timer")} testID="row-timer" />
         <Row icon="resources" title="Recursos" onPress={() => router.push("/resources")} testID="row-resources" />
 
+        <Text style={styles.sectionTitle}>Mis datos</Text>
+        <View style={styles.infoCard} testID="profile-info-card">
+          <InfoRow label="Sección" value={user?.section ? `9°${user.section}` : "—"} />
+          <InfoRow label="Jornada" value={user?.jornada || "—"} />
+          <InfoRow label="Fecha de nacimiento" value={user?.birth_date || "—"} />
+          <InfoRow label="Teléfono" value={user?.student_phone || "—"} />
+          <InfoRow label="Acudiente" value={user?.guardian_name || "—"} />
+          <InfoRow label="Tel. acudiente" value={user?.guardian_phone || "—"} last />
+        </View>
+        <Row icon="profile" title="Editar mi perfil" onPress={() => router.push("/profile-edit")} testID="row-edit-profile" />
+
         <Text style={styles.sectionTitle}>Cuenta</Text>
         <Pressable onPress={signOut} style={[styles.row, { backgroundColor: colors.surfaceSecondary }]} testID="row-signout">
           <View style={[styles.rowIcon, { backgroundColor: "#FEE2E2" }]}>
@@ -82,6 +93,15 @@ function Row({
       <Text style={styles.rowTitle}>{title}</Text>
       <Icon name="chevron" size={22} color={colors.muted} />
     </Pressable>
+  );
+}
+
+function InfoRow({ label, value, last }: { label: string; value: string; last?: boolean }) {
+  return (
+    <View style={[styles.infoRow, last && { borderBottomWidth: 0 }]}>
+      <Text style={styles.infoLabel}>{label}</Text>
+      <Text style={styles.infoValue} numberOfLines={1}>{value}</Text>
+    </View>
   );
 }
 
@@ -128,5 +148,16 @@ const styles = StyleSheet.create({
     alignItems: "center", justifyContent: "center",
   },
   rowTitle: { flex: 1, color: colors.onSurface, fontSize: 14, fontWeight: "700" },
+  infoCard: {
+    marginHorizontal: spacing.lg, marginBottom: spacing.sm,
+    backgroundColor: colors.surfaceSecondary, borderRadius: radius.lg,
+    borderWidth: 1, borderColor: colors.border, paddingHorizontal: spacing.md,
+  },
+  infoRow: {
+    flexDirection: "row", justifyContent: "space-between", alignItems: "center",
+    paddingVertical: 12, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border, gap: spacing.md,
+  },
+  infoLabel: { color: colors.muted, fontSize: 13, fontWeight: "600" },
+  infoValue: { color: colors.onSurface, fontSize: 13, fontWeight: "700", flexShrink: 1, textAlign: "right" },
   footer: { textAlign: "center", color: colors.muted, fontSize: 11, marginTop: spacing.xl },
 });

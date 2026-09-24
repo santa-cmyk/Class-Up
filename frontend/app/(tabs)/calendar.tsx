@@ -9,6 +9,7 @@ import { colors, radius, spacing, subjectColor } from "@/src/theme";
 
 type Task = { id: string; title: string; subject: string; due_date?: string; completed: boolean };
 type SessionEntry = { id: string; duration_min: number; subject?: string; created_at: string };
+type EventDoc = { id: string; title: string; date: string; time?: string; type: string; subject?: string; description?: string };
 
 const DAYS = ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"];
 const MONTHS = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -27,20 +28,25 @@ export default function CalendarScreen() {
 
   const tasksQ = useQuery<Task[]>({ queryKey: ["tasks"], queryFn: () => api.get("/tasks") });
   const sessQ = useQuery<SessionEntry[]>({ queryKey: ["sessions"], queryFn: () => api.get("/sessions") });
+  const eventsQ = useQuery<EventDoc[]>({ queryKey: ["events"], queryFn: () => api.get("/events") });
 
   const eventsByDate = useMemo(() => {
-    const map: Record<string, { tasks: Task[]; sessions: SessionEntry[] }> = {};
+    const map: Record<string, { tasks: Task[]; sessions: SessionEntry[]; events: EventDoc[] }> = {};
     (tasksQ.data ?? []).forEach((t) => {
       if (!t.due_date) return;
       const k = t.due_date;
-      (map[k] ??= { tasks: [], sessions: [] }).tasks.push(t);
+      (map[k] ??= { tasks: [], sessions: [], events: [] }).tasks.push(t);
     });
     (sessQ.data ?? []).forEach((s) => {
       const k = s.created_at.slice(0, 10);
-      (map[k] ??= { tasks: [], sessions: [] }).sessions.push(s);
+      (map[k] ??= { tasks: [], sessions: [], events: [] }).sessions.push(s);
+    });
+    (eventsQ.data ?? []).forEach((e) => {
+      const k = e.date;
+      (map[k] ??= { tasks: [], sessions: [], events: [] }).events.push(e);
     });
     return map;
-  }, [tasksQ.data, sessQ.data]);
+  }, [tasksQ.data, sessQ.data, eventsQ.data]);
 
   const monthDays = useMemo(() => {
     const first = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
@@ -56,7 +62,7 @@ export default function CalendarScreen() {
   const changeMonth = (delta: number) =>
     setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + delta, 1));
 
-  const selectedEvents = eventsByDate[selected] ?? { tasks: [], sessions: [] };
+  const selectedEvents = eventsByDate[selected] ?? { tasks: [], sessions: [], events: [] };
   const today = ymd(new Date());
 
   return (
@@ -108,12 +114,28 @@ export default function CalendarScreen() {
 
         <View style={{ padding: spacing.lg, gap: spacing.sm }}>
           <Text style={styles.sectionTitle}>Eventos del {selected}</Text>
-          {selectedEvents.tasks.length === 0 && selectedEvents.sessions.length === 0 ? (
+          {selectedEvents.tasks.length === 0 && selectedEvents.sessions.length === 0 && selectedEvents.events.length === 0 ? (
             <View style={styles.empty}>
               <Text style={styles.emptySub}>Sin eventos programados.</Text>
             </View>
           ) : (
             <>
+              {selectedEvents.events.map((e) => {
+                const c = e.subject ? subjectColor(e.subject) : { bg: colors.brandTertiary, fg: colors.onBrandTertiary, solid: colors.brandPrimary };
+                return (
+                  <View key={e.id} style={styles.card} testID={`event-${e.id}`}>
+                    <View style={[styles.sessionIcon, { backgroundColor: c.bg }]}>
+                      <Text style={{ color: c.fg, fontWeight: "800" }}>◱</Text>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <Text style={styles.cardTitle}>{e.title}</Text>
+                      <Text style={styles.cardSub}>
+                        {e.type} {e.time ? `· ${e.time}` : ""}{e.subject ? ` · ${e.subject}` : ""}
+                      </Text>
+                    </View>
+                  </View>
+                );
+              })}
               {selectedEvents.tasks.map((t) => {
                 const c = subjectColor(t.subject);
                 return (

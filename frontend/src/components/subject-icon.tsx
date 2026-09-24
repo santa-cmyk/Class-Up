@@ -6,7 +6,7 @@ import { subjectColor } from "@/src/theme";
 const MONOGRAM: Record<string, string> = {
   "Lectura Crítica": "Lc",
   "Matemáticas": "Mt",
-  "Sociales y Ciudadanas": "Sc",
+  "Sociales": "Sc",
   "Ciencias Naturales": "Cn",
   "Inglés": "In",
 };

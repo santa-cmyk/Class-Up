@@ -14,7 +14,7 @@ type Resource = {
   type: string; difficulty: string; url: string; thumbnail?: string;
 };
 
-const AREAS = ["Todos", "Lectura Crítica", "Matemáticas", "Sociales y Ciudadanas", "Ciencias Naturales", "Inglés"];
+const AREAS = ["Todos", "Lectura Crítica", "Matemáticas", "Sociales", "Ciencias Naturales", "Inglés"];
 
 const DIFF_LABEL: Record<string, string> = { basico: "Básico", intermedio: "Intermedio", avanzado: "Avanzado" };
 

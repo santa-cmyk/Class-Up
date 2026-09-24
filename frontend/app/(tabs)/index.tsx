@@ -11,7 +11,8 @@ import { SubjectIcon } from "@/src/components/subject-icon";
 import { colors, radius, spacing, subjectColor } from "@/src/theme";
 
 type Task = {
-  id: string; title: string; subject: string; due_date?: string; priority: string; completed: boolean;
+  id: string; title: string; subject: string; due_date?: string; due_time?: string;
+  priority: string; completed: boolean;
 };
 type Progress = { tasks_total: number; tasks_completed: number; tasks_pending: number; grades_avg: number; study_minutes: number };
 type Grade = { id: string; subject: string; activity: string; score: number };
@@ -21,6 +22,27 @@ function greeting() {
   if (h < 12) return "Buenos días";
   if (h < 19) return "Buenas tardes";
   return "Buenas noches";
+}
+
+function dueSoon(task: Task): { dueMs: number; hoursLeft: number } | null {
+  if (task.completed || !task.due_date) return null;
+  // Combine date + optional time into a local Date
+  const iso = task.due_time ? `${task.due_date}T${task.due_time.length === 5 ? task.due_time : task.due_time}:00` : `${task.due_date}T23:59:00`;
+  const t = new Date(iso).getTime();
+  if (isNaN(t)) return null;
+  const now = Date.now();
+  const diff = t - now;
+  const hoursLeft = diff / (1000 * 60 * 60);
+  // Show if due within 24h AND not more than 12h overdue
+  if (hoursLeft > 24 || hoursLeft < -12) return null;
+  return { dueMs: t, hoursLeft };
+}
+
+function formatDueLabel(hoursLeft: number) {
+  if (hoursLeft < 0) return "atrasada";
+  if (hoursLeft < 1) return "en menos de 1 h";
+  const h = Math.round(hoursLeft);
+  return `en ${h} h`;
 }
 
 export default function HomeScreen() {
@@ -33,6 +55,10 @@ export default function HomeScreen() {
   const gradesQ = useQuery<Grade[]>({ queryKey: ["grades"], queryFn: () => api.get("/grades") });
 
   const upcoming = (tasksQ.data ?? []).filter((t) => !t.completed).slice(0, 5);
+  const dueSoonTasks = (tasksQ.data ?? [])
+    .map((t) => ({ task: t, meta: dueSoon(t) }))
+    .filter((x): x is { task: Task; meta: { dueMs: number; hoursLeft: number } } => !!x.meta)
+    .sort((a, b) => a.meta.dueMs - b.meta.dueMs);
 
   return (
     <View style={styles.root}>
@@ -49,7 +75,7 @@ export default function HomeScreen() {
             <Text style={styles.name} numberOfLines={1}>
               {user?.name ?? "Estudiante"}
             </Text>
-            <Text style={styles.gradeText}>Grado {user?.grade ?? "9°"}</Text>
+            <Text style={styles.gradeText}>Grado {user?.grade ?? "9°"}{user?.section ? ` · ${user.section}` : ""}</Text>
           </View>
           <View style={styles.avatar}>
             {user?.picture ? (
@@ -59,6 +85,36 @@ export default function HomeScreen() {
             )}
           </View>
         </View>
+
+        {/* Aviso de entregas < 24h */}
+        {dueSoonTasks.length > 0 ? (
+          <View style={styles.alertWrap} testID="due-soon-banner">
+            {dueSoonTasks.slice(0, 3).map(({ task, meta }) => {
+              const overdue = meta.hoursLeft < 0;
+              return (
+                <Pressable
+                  key={task.id}
+                  onPress={() => router.push("/(tabs)/tasks")}
+                  style={[styles.alertCard, overdue ? styles.alertCardOverdue : styles.alertCardWarn]}
+                  testID={`due-soon-${task.id}`}
+                >
+                  <View style={styles.alertIcon}>
+                    <Text style={styles.alertIconText}>{overdue ? "!" : "◔"}</Text>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.alertTitle} numberOfLines={1}>
+                      {overdue ? "Entrega atrasada" : "Entrega próxima"} · {task.subject}
+                    </Text>
+                    <Text style={styles.alertSub} numberOfLines={1}>
+                      {task.title} · vence {formatDueLabel(meta.hoursLeft)}
+                    </Text>
+                  </View>
+                  <Text style={styles.alertLink}>Ver ›</Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        ) : null}
 
         {/* Rendimiento */}
         <View style={styles.metricsRow}>
@@ -207,6 +263,21 @@ const styles = StyleSheet.create({
     alignItems: "center", justifyContent: "center", overflow: "hidden",
   },
   avatarText: { color: colors.onBrandPrimary, fontSize: 22, fontWeight: "800" },
+  alertWrap: { paddingHorizontal: spacing.lg, marginBottom: spacing.lg, gap: spacing.sm },
+  alertCard: {
+    flexDirection: "row", alignItems: "center", gap: spacing.md,
+    padding: spacing.md, borderRadius: radius.lg, borderWidth: 1,
+  },
+  alertCardWarn: { backgroundColor: "#FEF3C7", borderColor: "#FCD34D" },
+  alertCardOverdue: { backgroundColor: "#FEE2E2", borderColor: "#FCA5A5" },
+  alertIcon: {
+    width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.6)",
+    alignItems: "center", justifyContent: "center",
+  },
+  alertIconText: { fontSize: 16, fontWeight: "800", color: colors.onSurface },
+  alertTitle: { color: colors.onSurface, fontSize: 13, fontWeight: "800" },
+  alertSub: { color: colors.onSurfaceSecondary, fontSize: 12, marginTop: 2 },
+  alertLink: { color: colors.onSurface, fontSize: 13, fontWeight: "800" },
   metricsRow: { flexDirection: "row", gap: spacing.sm, paddingHorizontal: spacing.lg, marginBottom: spacing.xl },
   metric: {
     flex: 1, borderRadius: radius.lg, padding: spacing.md, gap: 4,
