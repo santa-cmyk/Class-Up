@@ -1,0 +1,200 @@
+{
+  "app_name": "CLASS UP · EL CASTILLO",
+  "personality": "4 Tactile / Playful LIGHT",
+  "personality_one_liner": "A friendly, touchable, and engaging educational companion that turns school management from a chore into a rewarding daily habit.",
+  "color": {
+    "surface": "#FAFAFA",
+    "onSurface": "#18181B",
+    "surfaceSecondary": "#F4F4F5",
+    "onSurfaceSecondary": "#27272A",
+    "surfaceTertiary": "#E4E4E7",
+    "onSurfaceTertiary": "#3F3F46",
+    "surfaceInverse": "#18181B",
+    "onSurfaceInverse": "#FAFAFA",
+    "brand": "#10B981",
+    "onBrand": "#FFFFFF",
+    "brandPrimary": "#10B981",
+    "onBrandPrimary": "#FFFFFF",
+    "brandSecondary": "#F59E0B",
+    "onBrandSecondary": "#18181B",
+    "brandTertiary": "#D1FAE5",
+    "onBrandTertiary": "#065F46",
+    "success": "#22C55E",
+    "onSuccess": "#FFFFFF",
+    "warning": "#F59E0B",
+    "onWarning": "#18181B",
+    "error": "#EF4444",
+    "onError": "#FFFFFF",
+    "info": "#14B8A6",
+    "onInfo": "#FFFFFF",
+    "border": "#E4E4E7",
+    "borderStrong": "#A1A1AA",
+    "divider": "#E4E4E7",
+    "muted": "#71717A"
+  },
+  "typography": {
+    "displayFontFamily": "Figtree",
+    "textFontFamily": "Nunito",
+    "scale": {
+      "sm": 12,
+      "base": 14,
+      "lg": 16,
+      "xl": 20,
+      "2xl": 24
+    }
+  },
+  "spacing": {
+    "rule": "Generous spacing. Allow the UI to breathe. Never cramp cards together. Use md or lg padding for cards.",
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "2xl": 32,
+    "3xl": 48
+  },
+  "radius_tokens": {
+    "sm": 6,
+    "md": 12,
+    "lg": 20,
+    "pill": 999
+  },
+  "shadow_tier": "2",
+  "navigation": "bottom_tabs",
+  "icon_set": "Phosphor",
+  "glassmorphism": {
+    "enabled": "true",
+    "do's": [
+      "Use glass on the bottom tab bar.",
+      "Use glass on sticky headers over scrolling content.",
+      "Use glass on the Pomodoro timer floating controls."
+    ],
+    "dont's": [
+      "Do not use glass on regular list items or task cards.",
+      "Do not blur form inputs or text areas."
+    ]
+  },
+  "platform_libraries": {
+    "glass": {
+      "ios": "expo-glass-effect",
+      "android": "expo-blur",
+      "low_end_android_fallback": "solid surfaceSecondary"
+    },
+    "image": "expo-image",
+    "blur": "expo-blur",
+    "bottom_sheet": "@gorhom/bottom-sheet",
+    "animation": "react-native-reanimated",
+    "gesture": "react-native-gesture-handler"
+  },
+  "screens": [
+    {
+      "name": "Login",
+      "purpose": "Google sign-in entry point with an aesthetic educational hero background.",
+      "states": {
+        "loading": "Centered brand-colored spinner over the background image.",
+        "empty": "N/A",
+        "error": "Error toast over the login screen."
+      },
+      "layout": "Full-bleed hero image (students studying). Absolute positioned vertical linear-gradient scrim (transparent to 80% surfaceInverse at bottom). Bottom 35% contains the app title (Figtree, 2xl, onSurfaceInverse), subtitle, and a full-width pill-shaped Google login button."
+    },
+    {
+      "name": "Initial Assessment",
+      "purpose": "Onboarding step to identify strengths in 5 key subjects.",
+      "states": {
+        "loading": "Skeleton cards mimicking the 5 subject layout.",
+        "empty": "N/A",
+        "error": "Standard retry state."
+      },
+      "layout": "Scrollable single column. Top features a playful welcoming header. Below are 5 stacked cards for the subjects. Each card has lg padding, shadow_tier 2, and a large tinted icon container (brandTertiary) with a Phosphor icon representing the subject. A primary CTA 'Abrir evaluación' sits inside each card or below the description."
+    },
+    {
+      "name": "Home (Dashboard)",
+      "purpose": "A quick overview of the student's day, tasks, and academic performance.",
+      "states": {
+        "loading": "Skeleton UI for task lists and grade summaries.",
+        "empty": "Illustration of a student resting, 'No pending tasks today!'",
+        "error": "Error message with 'Retry' button."
+      },
+      "layout": "Vertical scroll layout. Sticky glass header with greeting and student avatar. Section 1: 'Próximas entregas' (horizontal scroll of task cards). Section 2: 'Mi Rendimiento' (two column grid: one card for Grades Average, one for Pomodoro quick-start). Section 3: 'Accesos rápidos' (Chips or grid of secondary actions like Resources)."
+    },
+    {
+      "name": "Tasks",
+      "purpose": "CRUD interface for homework and school assignments.",
+      "states": {
+        "loading": "List of skeleton items.",
+        "empty": "Illustration + 'Aún no tienes tareas asignadas.' + Add Task CTA.",
+        "error": "Error message with 'Retry' button."
+      },
+      "layout": "List view. Each row has a minimum 56pt height, displaying task title, subject tag (tinted chip), and a priority indicator. A floating action button (FAB) with glass effect sits at the bottom right for creating a new task. The 'Add Task' sheet uses a bottom sheet with form inputs (Subject, Date, Priority)."
+    },
+    {
+      "name": "Grades",
+      "purpose": "Track subject performance and visualize academic evolution.",
+      "states": {
+        "loading": "Skeleton list and graph placeholders.",
+        "empty": "Illustration + 'No hay calificaciones registradas en este periodo.'",
+        "error": "Error message with 'Retry' button."
+      },
+      "layout": "Top section shows a large general average in a brand-tinted card. Below is a 1-column list of subjects. Tapping a subject expands to show individual activity grades. Use visual progress bars or trend arrows (success/error colors) to show evolution."
+    },
+    {
+      "name": "Pomodoro Timer",
+      "purpose": "A focused timer for study sessions.",
+      "states": {
+        "loading": "N/A",
+        "empty": "N/A",
+        "error": "N/A"
+      },
+      "layout": "Centered massive circular timer (Tactile style, oversized fonts). Below it, a segmented control or playful pill buttons for 15/25/45/60 min options. Large Primary CTA 'Iniciar'. The background can have subtle Skia noise or a very soft brandTertiary radial gradient."
+    },
+    {
+      "name": "Calendar",
+      "purpose": "Monthly view of deadlines and study sessions.",
+      "states": {
+        "loading": "Calendar grid skeleton.",
+        "empty": "Calendar grid visible but no events on selected day.",
+        "error": "Error loading events."
+      },
+      "layout": "Standard monthly calendar grid at the top. Selecting a day updates the list below it. List shows tasks or study sessions with time blocks and subject colors."
+    },
+    {
+      "name": "Resources Library",
+      "purpose": "Browse educational videos and materials.",
+      "states": {
+        "loading": "Grid of skeleton cards.",
+        "empty": "Illustration + 'No hay recursos disponibles en esta categoría.'",
+        "error": "Error loading resources."
+      },
+      "layout": "Horizontal sticky filter pills at the top (All, Math, Science, etc.). Below, a 2-column grid of resource cards. Each card has an image thumbnail (with gradient scrim and play icon if video), title, and difficulty badge."
+    },
+    {
+      "name": "Profile",
+      "purpose": "Manage student identity and settings.",
+      "states": {
+        "loading": "Profile skeleton.",
+        "empty": "N/A",
+        "error": "N/A"
+      },
+      "layout": "Top cover banner (tinted brand image) with the student's avatar overlapping the bottom edge. Below: Name, Grade (9°), Email. Then a list of settings rows (using brandTertiary tinted icon containers) for Theme, Notifications, and a destructive 'Cerrar sesión' button at the bottom."
+    }
+  ],
+  "images": {
+    "login_hero": {
+      "url": "https://images.unsplash.com/photo-1741699428220-65f37f3fbbcb?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHwxfHxhZXN0aGV0aWMlMjBoaWdoJTIwc2Nob29sJTIwc3R1ZGVudCUyMHN0dWR5aW5nJTIwbGlicmFyeXxlbnwwfHx8fDE3OTAyMTgwMjB8MA&ixlib=rb-4.1.0&q=85",
+      "alt": "Aesthetic high school student studying in a modern library"
+    },
+    "empty_tasks": {
+      "url": "https://images.pexels.com/photos/6550173/pexels-photo-6550173.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "alt": "Focused student with books - representing study time"
+    }
+  },
+  "instructions_to_main_agent": [
+    "Strictly follow the Tactile / Playful LIGHT personality: use generous rounded corners (lg to pill), oversized tap targets, and avoid sharp brutalist edges.",
+    "No Blue or Purple colors: All accents must be Emerald/Mint (brand) or Amber (warning/secondary). Navy and Sky Blue are strictly banned.",
+    "Implement a bottom tab bar with 4 tabs: Inicio, Tareas, Calendario, Perfil. (Max 4 as requested, with Calificaciones and Pomodoro accessible via Home/Profile).",
+    "Apply the gradient-to-dark scrim pattern on the Login screen background image to ensure text contrast (transparent at top, 80% surfaceInverse at bottom).",
+    "Use Phosphor icons with filled variations for active states and outlined for inactive states in the tab bar.",
+    "Forms (like Add Task) must use standard single-column layouts with labels above inputs and a sticky CTA button at the bottom using KeyboardAvoidingView.",
+    "Do not use generic emojis for subjects or empty states; rely on Phosphor icons inside brandTertiary tinted containers or actual images."
+  ]
+}

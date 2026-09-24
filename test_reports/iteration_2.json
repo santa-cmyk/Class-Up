@@ -1,0 +1,36 @@
+{
+  "summary": "Iteration 2 backend testing — mandatory onboarding flow. Added a dedicated test module (test_mandatory_onboarding.py) exercising every gate: /auth/me exposes new profile fields; /assessments/complete before profile → 400 'Perfil incompleto'; /profile/setup rejects each of the 6 required fields when empty or whitespace-only with 'Campo obligatorio: <field>'; lowercase section is uppercased on save; /assessments/complete after profile but with missing/partial subjects returns 400 listing exactly the missing ones (and never the opened ones); the full happy path (profile → open 5 → complete) returns 200 {ok:true} and /auth/me reflects both flags true. Iteration-1 test_complete_toggles_flag was updated to first satisfy the new prerequisites (profile setup + open all 5). All iteration-1 endpoints (tasks, grades, sessions, resources ≥20 with Matemáticas filter, progress, logout) still pass. No _id leakage anywhere. Auth guard consistently returns 401 (never 403) on missing/invalid/empty tokens. Uses a dedicated user (user_mandatory_test / TEST_TOKEN_MANDATORY) for the onboarding scenario to avoid parallel-worker collisions with the primary user under -n 2 --dist loadscope. Total: 40/40 pytest cases pass (100%).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_classup_backend.py",
+    "/app/backend/tests/test_mandatory_onboarding.py",
+    "/app/backend/tests/conftest.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "server.py: /profile/setup enforces the 6 required fields but does not validate content (e.g. birth_date is stored as free text, phone is not length-checked). Not a bug — just noting for future hardening.",
+    "server.py has no length cap on payload fields (name, guardian_name, etc.). Consider Pydantic constraints (min_length/max_length) to prevent abuse.",
+    "@app.on_event('startup'/'shutdown') is still deprecated in FastAPI — migrate to lifespan (carry-over from iteration 1).",
+    "/api/profile/setup accepts an unrecognised jornada value (any non-empty string is stored). If the app requires exactly one of {Mañana, Tarde, Única}, enforce with an Enum/Literal to reject typos server-side."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_classup_backend.py (updated test_complete_toggles_flag to satisfy new gating)",
+    "/app/backend/tests/test_mandatory_onboarding.py (new — 17 iteration-2 cases)"
+  ],
+  "success_rate": {"backend": "100% (40/40)", "frontend": "not tested (backend-only request)"},
+  "seed_data_creation": "Reused user_test123 / TEST_TOKEN_123 for iteration-1 cases (reset to profile_setup_completed=False, initial_assessment_completed=False, assessments_opened=[] at end of run per request). Created dedicated user_mandatory_test / TEST_TOKEN_MANDATORY for the mandatory-onboarding scenario so it can be reset per-test without racing the primary token under xdist. Secondary user user_test_secondary / TEST_TOKEN_SECONDARY still used for cross-user isolation.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Two test modules now: test_classup_backend.py (uses TEST_TOKEN_123) and test_mandatory_onboarding.py (uses TEST_TOKEN_MANDATORY). Under pytest.ini's `-n 2 --dist loadscope` these two modules can run on separate workers safely because they touch different users. If you add more onboarding tests, keep them in test_mandatory_onboarding.py (they auto-reset the mandatory user) OR create a new dedicated user/token — never mutate the primary user's onboarding flags from a module other than test_classup_backend.py. All 5 subject names must match exactly: 'Lectura Crítica', 'Matemáticas', 'Sociales y Ciudadanas', 'Ciencias Naturales', 'Inglés'. BASE_URL read from EXPO_PUBLIC_BACKEND_URL in /app/frontend/.env.",
+  "rca_of_issue": "N/A — no bugs found. Iteration 2 backend implementation is correct and matches the specification exactly."
+}

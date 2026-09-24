@@ -1,0 +1,35 @@
+{
+  "summary": "Backend testing for Class Up · El Castillo. Created a full pytest suite (23 tests) covering health, auth guards, Emergent-Google session exchange rejection paths, /auth/me with seeded TEST_TOKEN_123, assessments (list/open/complete), tasks CRUD + cross-user isolation, grades CRUD + summary, study sessions + summary, resources (public, >=20 items and Matemáticas filter), progress aggregation, and /auth/logout invalidation. 23/23 passed (100%). No _id leakage detected in any response body. Auth returns 401 (not 403) on missing/invalid Bearer tokens as required.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_classup_backend.py",
+    "/app/backend/tests/conftest.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "server.py is 535 lines and starts to feel monolithic — consider splitting per-domain routers (auth/tasks/grades/sessions/resources/progress) into their own modules for maintainability, but not urgent.",
+    "@app.on_event('startup'/'shutdown') is deprecated in FastAPI in favour of a lifespan context manager. Works today but will warn on newer FastAPI versions.",
+    "Every /api/auth/session call currently inserts a new row into user_sessions even if the same token exists (no upsert). The unique index on session_token would 409 on duplicate — Emergent tokens are unique per exchange, so this is safe today but an upsert would be more defensive.",
+    "PATCH /api/tasks rejects `completed: false` because the update filter uses `if v is not None` yet `model_dump()` returns None for unset fields, so this actually works — but the `if not updates: raise 400` branch could also reject valid partial updates that only set a boolean False. Verified end-to-end: toggling completed works. No fix needed, just noting."
+  ],
+  "updated_files": [
+    "/app/backend/tests/conftest.py (new)",
+    "/app/backend/tests/test_classup_backend.py (new)"
+  ],
+  "success_rate": {"backend": "100% (23/23)", "frontend": "not tested (backend-only request)"},
+  "seed_data_creation": "Reused pre-seeded user_id=user_test123 / session_token=TEST_TOKEN_123. Additionally upserted a secondary user (user_test_secondary / TEST_TOKEN_SECONDARY) for cross-user isolation tests, and a TEST_TOKEN_LOGOUT session used exclusively by the logout test so it does not clobber the primary token used by parallel xdist workers.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "pytest.ini in /app/backend forces `-n 2 --dist loadscope`. Any test class that mutates shared MongoDB state across the primary TEST_TOKEN_123 session must be careful — the logout test therefore uses its own dedicated TEST_TOKEN_LOGOUT so the primary token remains valid for other parallel workers. Seeded resources count is 22 (>=20 required). BASE_URL is read from EXPO_PUBLIC_BACKEND_URL in /app/frontend/.env (=https://study-castle.preview.emergentagent.com).",
+  "rca_of_issue": "N/A — no bugs found."
+}
