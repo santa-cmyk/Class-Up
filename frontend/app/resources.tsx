@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
-import * as WebBrowser from "expo-web-browser";
 import { useState } from "react";
-import { ActivityIndicator, Linking, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { api } from "@/src/api/client";
@@ -27,15 +26,6 @@ export default function ResourcesScreen() {
     queryKey: ["resources", area],
     queryFn: () => api.get(`/resources${area !== "Todos" ? `?area=${encodeURIComponent(area)}` : ""}`),
   });
-
-  const open = async (url: string) => {
-    try {
-      if (Platform.OS === "web") window.open(url, "_blank");
-      else await WebBrowser.openBrowserAsync(url);
-    } catch {
-      Linking.openURL(url);
-    }
-  };
 
   return (
     <View style={styles.root}>
@@ -72,7 +62,7 @@ export default function ResourcesScreen() {
                 const c = subjectColor(r.area);
                 return (
                   <Pressable
-                    key={r.id} onPress={() => open(r.url)} style={styles.card} testID={`resource-${r.id}`}
+                    key={r.id} onPress={() => router.push(`/resource/${r.id}` as any)} style={styles.card} testID={`resource-${r.id}`}
                   >
                     <View style={styles.thumbWrap}>
                       {r.thumbnail ? (

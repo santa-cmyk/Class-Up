@@ -41,7 +41,7 @@ api = APIRouter(prefix="/api")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
+    allow_credentials=False,
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
@@ -267,6 +267,36 @@ async def get_current_user(request: Request) -> dict:
 # Auth routes
 # ---------------------------------------------------------------------------
 @api.post("/auth/session")
+@api.post("/auth/dev-login")
+async def dev_login():
+    token = str(uuid.uuid4())
+
+    user = {
+        "user_id": "demo_juan_david",
+        "email": "juan.martinez.demo@example.com",
+        "name": "Santiago Andres Pabon Ramos",
+        "grade": "9°",
+        "section": "9°B",
+        "jornada": "Tarde",
+        "profile_setup_completed": True,
+        "initial_assessment_completed": True,
+    }
+
+    await db.users.update_one(
+        {"user_id": user["user_id"]},
+        {"$set": user},
+        upsert=True,
+    )
+
+    await db.user_sessions.insert_one({
+        "session_token": token,
+        "user_id": user["user_id"],
+    })
+
+    return {
+        "session_token": token,
+        "user": user,
+    }
 async def create_session(payload: SessionExchange):
     if not payload.session_id:
         raise HTTPException(status_code=400, detail="session_id required")
@@ -444,10 +474,16 @@ async def profile_update(payload: ProfileUpdate, user=Depends(get_current_user))
 # ---------------------------------------------------------------------------
 @api.get("/tasks", response_model=List[Task])
 async def list_tasks(user=Depends(get_current_user)):
-    docs = await db.tasks.find({"user_id": user["user_id"]}, {"_id": 0}).sort("created_at", -1).to_list(500)
+    docs = await db.tasks.find(
+        {"user_id": user["user_id"]},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(500)
+
+    for d in docs:
+        if "id" not in d:
+            d["id"] = str(uuid.uuid4())
+
     return [Task(**d) for d in docs]
-
-
 @api.post("/tasks", response_model=Task)
 async def create_task(payload: TaskCreate, user=Depends(get_current_user)):
     task = Task(user_id=user["user_id"], **payload.model_dump())
@@ -550,6 +586,14 @@ async def list_resources(area: Optional[str] = None):
         query["area"] = area
     docs = await db.resources.find(query, {"_id": 0}).to_list(500)
     return [Resource(**d) for d in docs]
+
+
+@api.get("/resources/{resource_id}", response_model=Resource)
+async def get_resource(resource_id: str):
+    doc = await db.resources.find_one({"id": resource_id}, {"_id": 0})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Resource not found")
+    return Resource(**doc)
 
 
 # ---------------------------------------------------------------------------

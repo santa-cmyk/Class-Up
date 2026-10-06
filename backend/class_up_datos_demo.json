@@ -1,0 +1,940 @@
+{
+  "version": "1.0-demo",
+  "materias": [
+    "Matemáticas",
+    "Lectura Crítica",
+    "Ciencias Naturales",
+    "Inglés",
+    "Sociales"
+  ],
+  "perfil_demo": {
+    "nombre": "Juan David Martínez",
+    "grado": "9°",
+    "grupo": "9°A",
+    "jornada": "Tarde",
+    "institucion": "Institución Educativa Colegio El Castillo",
+    "acudiente_nombre": "María Martínez",
+    "acudiente_parentesco": "Madre",
+    "acudiente_telefono": "3000000000",
+    "correo": "juan.martinez.demo@example.com",
+    "es_demo": true
+  },
+  "tareas": [
+    {
+      "id": "T01",
+      "titulo": "Taller de ecuaciones lineales",
+      "materia": "Matemáticas",
+      "descripcion": "Resolver 10 ejercicios de ecuaciones de primer grado.",
+      "fecha_entrega": "2026-09-28",
+      "prioridad": "Alta",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T02",
+      "titulo": "Sistemas de ecuaciones 2x2",
+      "materia": "Matemáticas",
+      "descripcion": "Resolver ejercicios por sustitución y eliminación.",
+      "fecha_entrega": "2026-10-02",
+      "prioridad": "Alta",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T03",
+      "titulo": "Productos notables",
+      "materia": "Matemáticas",
+      "descripcion": "Completar guía sobre cuadrado de binomio y diferencia de cuadrados.",
+      "fecha_entrega": "2026-10-07",
+      "prioridad": "Media",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T04",
+      "titulo": "Probabilidad básica",
+      "materia": "Matemáticas",
+      "descripcion": "Resolver problemas de probabilidad simple y representar resultados.",
+      "fecha_entrega": "2026-10-14",
+      "prioridad": "Media",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T05",
+      "titulo": "Idea principal e inferencias",
+      "materia": "Lectura Crítica",
+      "descripcion": "Analizar un texto y responder 10 preguntas de comprensión.",
+      "fecha_entrega": "2026-09-29",
+      "prioridad": "Alta",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T06",
+      "titulo": "Análisis de un artículo de opinión",
+      "materia": "Lectura Crítica",
+      "descripcion": "Identificar tesis, argumentos y conclusión.",
+      "fecha_entrega": "2026-10-03",
+      "prioridad": "Alta",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T07",
+      "titulo": "Conectores y coherencia",
+      "materia": "Lectura Crítica",
+      "descripcion": "Completar ejercicios de conectores lógicos.",
+      "fecha_entrega": "2026-10-09",
+      "prioridad": "Media",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T08",
+      "titulo": "Simulacro de lectura crítica",
+      "materia": "Lectura Crítica",
+      "descripcion": "Resolver un mini simulacro de 20 preguntas.",
+      "fecha_entrega": "2026-10-16",
+      "prioridad": "Alta",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T09",
+      "titulo": "Modelo de la célula",
+      "materia": "Ciencias Naturales",
+      "descripcion": "Elaborar un esquema de la célula animal y sus organelos.",
+      "fecha_entrega": "2026-09-30",
+      "prioridad": "Media",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T10",
+      "titulo": "Genética básica",
+      "materia": "Ciencias Naturales",
+      "descripcion": "Resolver ejercicios de cruces genéticos sencillos.",
+      "fecha_entrega": "2026-10-05",
+      "prioridad": "Alta",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T11",
+      "titulo": "Ecosistemas",
+      "materia": "Ciencias Naturales",
+      "descripcion": "Realizar una cadena alimentaria y explicar sus niveles tróficos.",
+      "fecha_entrega": "2026-10-10",
+      "prioridad": "Media",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T12",
+      "titulo": "Reacciones químicas",
+      "materia": "Ciencias Naturales",
+      "descripcion": "Balancear 10 ecuaciones químicas sencillas.",
+      "fecha_entrega": "2026-10-17",
+      "prioridad": "Alta",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T13",
+      "titulo": "Present Simple",
+      "materia": "Inglés",
+      "descripcion": "Completar ejercicios de afirmaciones, negaciones y preguntas.",
+      "fecha_entrega": "2026-09-27",
+      "prioridad": "Media",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T14",
+      "titulo": "Past Simple",
+      "materia": "Inglés",
+      "descripcion": "Escribir 12 oraciones sobre actividades realizadas el fin de semana.",
+      "fecha_entrega": "2026-10-04",
+      "prioridad": "Media",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T15",
+      "titulo": "Reading comprehension",
+      "materia": "Inglés",
+      "descripcion": "Leer un texto corto y responder preguntas en inglés.",
+      "fecha_entrega": "2026-10-11",
+      "prioridad": "Alta",
+      "estado": "pendiente"
+    },
+    {
+      "id": "T16",
+      "titulo": "First Conditional",
+      "materia": "Inglés",
+      "descripcion": "Crear 10 oraciones usando first conditional.",
+      "fecha_entrega": "2026-10-18",
+      "prioridad": "Media",
+      "estado": "completada"
+    },
+    {
+      "id": "T17",
+      "titulo": "Ramas del poder público",
+      "materia": "Sociales",
+      "descripcion": "Elaborar cuadro comparativo de las tres ramas del poder público en Colombia.",
+      "fecha_entrega": "2026-09-30",
+      "prioridad": "Alta",
+      "estado": "completada"
+    },
+    {
+      "id": "T18",
+      "titulo": "Revolución Industrial",
+      "materia": "Sociales",
+      "descripcion": "Realizar una línea de tiempo con acontecimientos principales.",
+      "fecha_entrega": "2026-10-06",
+      "prioridad": "Media",
+      "estado": "completada"
+    },
+    {
+      "id": "T19",
+      "titulo": "Regiones naturales de Colombia",
+      "materia": "Sociales",
+      "descripcion": "Ubicar las regiones naturales y escribir dos características de cada una.",
+      "fecha_entrega": "2026-10-13",
+      "prioridad": "Media",
+      "estado": "completada"
+    },
+    {
+      "id": "T20",
+      "titulo": "Participación ciudadana",
+      "materia": "Sociales",
+      "descripcion": "Responder preguntas sobre mecanismos de participación ciudadana.",
+      "fecha_entrega": "2026-10-20",
+      "prioridad": "Alta",
+      "estado": "completada"
+    }
+  ],
+  "calificaciones": [
+    {
+      "id": "C01",
+      "materia": "Matemáticas",
+      "actividad": "Taller de ecuaciones lineales",
+      "calificacion": 4.5,
+      "escala": "0.0-5.0",
+      "fecha": "2026-09-28"
+    },
+    {
+      "id": "C02",
+      "materia": "Matemáticas",
+      "actividad": "Sistemas de ecuaciones 2x2",
+      "calificacion": 4.0,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-02"
+    },
+    {
+      "id": "C03",
+      "materia": "Matemáticas",
+      "actividad": "Productos notables",
+      "calificacion": 3.8,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-07"
+    },
+    {
+      "id": "C04",
+      "materia": "Matemáticas",
+      "actividad": "Probabilidad básica",
+      "calificacion": 4.7,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-14"
+    },
+    {
+      "id": "C05",
+      "materia": "Lectura Crítica",
+      "actividad": "Idea principal e inferencias",
+      "calificacion": 4.2,
+      "escala": "0.0-5.0",
+      "fecha": "2026-09-29"
+    },
+    {
+      "id": "C06",
+      "materia": "Lectura Crítica",
+      "actividad": "Análisis de un artículo de opinión",
+      "calificacion": 3.9,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-03"
+    },
+    {
+      "id": "C07",
+      "materia": "Lectura Crítica",
+      "actividad": "Conectores y coherencia",
+      "calificacion": 4.6,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-09"
+    },
+    {
+      "id": "C08",
+      "materia": "Lectura Crítica",
+      "actividad": "Simulacro de lectura crítica",
+      "calificacion": 4.3,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-16"
+    },
+    {
+      "id": "C09",
+      "materia": "Ciencias Naturales",
+      "actividad": "Modelo de la célula",
+      "calificacion": 4.8,
+      "escala": "0.0-5.0",
+      "fecha": "2026-09-30"
+    },
+    {
+      "id": "C10",
+      "materia": "Ciencias Naturales",
+      "actividad": "Genética básica",
+      "calificacion": 4.1,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-05"
+    },
+    {
+      "id": "C11",
+      "materia": "Ciencias Naturales",
+      "actividad": "Ecosistemas",
+      "calificacion": 3.7,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-10"
+    },
+    {
+      "id": "C12",
+      "materia": "Ciencias Naturales",
+      "actividad": "Reacciones químicas",
+      "calificacion": 4.4,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-17"
+    },
+    {
+      "id": "C13",
+      "materia": "Inglés",
+      "actividad": "Present Simple",
+      "calificacion": 4.9,
+      "escala": "0.0-5.0",
+      "fecha": "2026-09-27"
+    },
+    {
+      "id": "C14",
+      "materia": "Inglés",
+      "actividad": "Past Simple",
+      "calificacion": 4.0,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-04"
+    },
+    {
+      "id": "C15",
+      "materia": "Inglés",
+      "actividad": "Reading comprehension",
+      "calificacion": 4.5,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-11"
+    },
+    {
+      "id": "C16",
+      "materia": "Inglés",
+      "actividad": "First Conditional",
+      "calificacion": 3.6,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-18"
+    },
+    {
+      "id": "C17",
+      "materia": "Sociales",
+      "actividad": "Ramas del poder público",
+      "calificacion": 4.2,
+      "escala": "0.0-5.0",
+      "fecha": "2026-09-30"
+    },
+    {
+      "id": "C18",
+      "materia": "Sociales",
+      "actividad": "Revolución Industrial",
+      "calificacion": 4.7,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-06"
+    },
+    {
+      "id": "C19",
+      "materia": "Sociales",
+      "actividad": "Regiones naturales de Colombia",
+      "calificacion": 3.9,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-13"
+    },
+    {
+      "id": "C20",
+      "materia": "Sociales",
+      "actividad": "Participación ciudadana",
+      "calificacion": 4.6,
+      "escala": "0.0-5.0",
+      "fecha": "2026-10-20"
+    }
+  ],
+  "recursos": [
+    {
+      "materia": "Matemáticas",
+      "titulo": "Ecuaciones lineales — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Ecuaciones%20lineales%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Matemáticas",
+      "titulo": "Sistemas 2x2 — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Sistemas%202x2%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Matemáticas",
+      "titulo": "Productos notables — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Productos%20notables%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Matemáticas",
+      "titulo": "Factorización — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Factorizaci%C3%B3n%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Matemáticas",
+      "titulo": "Funciones lineales — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Funciones%20lineales%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Matemáticas",
+      "titulo": "Potenciación y radicación — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Potenciaci%C3%B3n%20y%20radicaci%C3%B3n%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Matemáticas",
+      "titulo": "Proporcionalidad — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Proporcionalidad%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Matemáticas",
+      "titulo": "Teorema de Pitágoras — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Teorema%20de%20Pit%C3%A1goras%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Matemáticas",
+      "titulo": "Geometría analítica — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Geometr%C3%ADa%20anal%C3%ADtica%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Matemáticas",
+      "titulo": "Probabilidad básica — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Probabilidad%20b%C3%A1sica%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Matemáticas",
+      "titulo": "Estadística — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Estad%C3%ADstica%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Matemáticas",
+      "titulo": "Polinomios — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Polinomios%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Matemáticas",
+      "titulo": "Áreas y perímetros — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=%C3%81reas%20y%20per%C3%ADmetros%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Matemáticas",
+      "titulo": "Volumen — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Volumen%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Matemáticas",
+      "titulo": "Regla de tres — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Regla%20de%20tres%20Matem%C3%A1ticas%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Comprensión lectora — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Comprensi%C3%B3n%20lectora%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Idea principal — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Idea%20principal%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Inferencias — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Inferencias%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Tipos de texto — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Tipos%20de%20texto%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Argumentos — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Argumentos%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Tesis y argumentos — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Tesis%20y%20argumentos%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Conectores — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Conectores%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Propósito comunicativo — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Prop%C3%B3sito%20comunicativo%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Información explícita e implícita — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Informaci%C3%B3n%20expl%C3%ADcita%20e%20impl%C3%ADcita%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Análisis de gráficos — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=An%C3%A1lisis%20de%20gr%C3%A1ficos%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Falacias — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Falacias%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Vocabulario en contexto — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Vocabulario%20en%20contexto%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Estructura textual — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Estructura%20textual%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Lectura crítica ICFES — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Lectura%20cr%C3%ADtica%20ICFES%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Lectura Crítica",
+      "titulo": "Interpretación de textos — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Interpretaci%C3%B3n%20de%20textos%20Lectura%20Cr%C3%ADtica%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "Célula — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=C%C3%A9lula%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "Genética — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Gen%C3%A9tica%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "ADN — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=ADN%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "Ecosistemas — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Ecosistemas%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "Cadenas alimentarias — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Cadenas%20alimentarias%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "Fotosíntesis — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Fotos%C3%ADntesis%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "Sistema nervioso — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Sistema%20nervioso%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "Sistema endocrino — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Sistema%20endocrino%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "Evolución — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Evoluci%C3%B3n%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "Método científico — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=M%C3%A9todo%20cient%C3%ADfico%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "Átomos — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=%C3%81tomos%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "Tabla periódica — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Tabla%20peri%C3%B3dica%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "Reacciones químicas — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Reacciones%20qu%C3%ADmicas%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "Fuerza y movimiento — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Fuerza%20y%20movimiento%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Ciencias Naturales",
+      "titulo": "Energía — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Energ%C3%ADa%20Ciencias%20Naturales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "Present simple — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Present%20simple%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "Past simple — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Past%20simple%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "Present continuous — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Present%20continuous%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "Future will — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Future%20will%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "Going to — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Going%20to%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "Modal verbs — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Modal%20verbs%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "Comparatives — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Comparatives%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "Superlatives — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Superlatives%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "Countable and uncountable nouns — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Countable%20and%20uncountable%20nouns%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "Some and any — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Some%20and%20any%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "Question words — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Question%20words%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "Adverbs of frequency — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Adverbs%20of%20frequency%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "First conditional — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=First%20conditional%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "Reading comprehension — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Reading%20comprehension%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Inglés",
+      "titulo": "Listening practice — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Listening%20practice%20Ingl%C3%A9s%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Constitución de Colombia — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Constituci%C3%B3n%20de%20Colombia%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Derechos fundamentales — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Derechos%20fundamentales%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Revolución Francesa — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Revoluci%C3%B3n%20Francesa%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Revolución Industrial — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Revoluci%C3%B3n%20Industrial%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Independencia de Colombia — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Independencia%20de%20Colombia%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Geografía de Colombia — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Geograf%C3%ADa%20de%20Colombia%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Regiones naturales — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Regiones%20naturales%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Globalización — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Globalizaci%C3%B3n%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Democracia — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Democracia%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Ramas del poder público — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Ramas%20del%20poder%20p%C3%BAblico%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Economía y sectores productivos — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Econom%C3%ADa%20y%20sectores%20productivos%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Conflicto y paz en Colombia — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Conflicto%20y%20paz%20en%20Colombia%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Migración — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Migraci%C3%B3n%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Diversidad cultural — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Diversidad%20cultural%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    },
+    {
+      "materia": "Sociales",
+      "titulo": "Participación ciudadana — recurso educativo",
+      "tipo": "Video de YouTube",
+      "url": "https://www.youtube.com/results?search_query=Participaci%C3%B3n%20ciudadana%20Sociales%20grado%209%20educativo%20espa%C3%B1ol"
+    }
+  ],
+  "eventos_calendario": [
+    {
+      "id": "E01",
+      "tipo": "Entrega",
+      "titulo": "Taller de ecuaciones lineales",
+      "fecha": "2026-09-28"
+    },
+    {
+      "id": "E02",
+      "tipo": "Evaluación",
+      "titulo": "Lectura crítica: comprensión e inferencias",
+      "fecha": "2026-09-29"
+    },
+    {
+      "id": "E03",
+      "tipo": "Entrega",
+      "titulo": "Modelo de la célula",
+      "fecha": "2026-09-30"
+    },
+    {
+      "id": "E04",
+      "tipo": "Evaluación",
+      "titulo": "Sociales: ramas del poder público",
+      "fecha": "2026-09-30"
+    },
+    {
+      "id": "E05",
+      "tipo": "Evaluación",
+      "titulo": "Inglés: Present Simple",
+      "fecha": "2026-10-01"
+    },
+    {
+      "id": "E06",
+      "tipo": "Entrega",
+      "titulo": "Sistemas de ecuaciones 2x2",
+      "fecha": "2026-10-02"
+    },
+    {
+      "id": "E07",
+      "tipo": "Evaluación",
+      "titulo": "Lectura crítica: artículo de opinión",
+      "fecha": "2026-10-03"
+    },
+    {
+      "id": "E08",
+      "tipo": "Entrega",
+      "titulo": "Past Simple",
+      "fecha": "2026-10-04"
+    },
+    {
+      "id": "E09",
+      "tipo": "Evaluación",
+      "titulo": "Ciencias Naturales: genética",
+      "fecha": "2026-10-05"
+    },
+    {
+      "id": "E10",
+      "tipo": "Entrega",
+      "titulo": "Revolución Industrial",
+      "fecha": "2026-10-06"
+    },
+    {
+      "id": "E11",
+      "tipo": "Evaluación",
+      "titulo": "Matemáticas: productos notables",
+      "fecha": "2026-10-07"
+    },
+    {
+      "id": "E12",
+      "tipo": "Entrega",
+      "titulo": "Conectores y coherencia",
+      "fecha": "2026-10-09"
+    },
+    {
+      "id": "E13",
+      "tipo": "Entrega",
+      "titulo": "Ecosistemas",
+      "fecha": "2026-10-10"
+    },
+    {
+      "id": "E14",
+      "tipo": "Evaluación",
+      "titulo": "Inglés: reading comprehension",
+      "fecha": "2026-10-11"
+    },
+    {
+      "id": "E15",
+      "tipo": "Entrega",
+      "titulo": "Regiones naturales de Colombia",
+      "fecha": "2026-10-13"
+    },
+    {
+      "id": "E16",
+      "tipo": "Entrega",
+      "titulo": "Probabilidad básica",
+      "fecha": "2026-10-14"
+    },
+    {
+      "id": "E17",
+      "tipo": "Evaluación",
+      "titulo": "Simulacro de lectura crítica",
+      "fecha": "2026-10-16"
+    },
+    {
+      "id": "E18",
+      "tipo": "Entrega",
+      "titulo": "Reacciones químicas",
+      "fecha": "2026-10-17"
+    },
+    {
+      "id": "E19",
+      "tipo": "Entrega",
+      "titulo": "First Conditional",
+      "fecha": "2026-10-18"
+    },
+    {
+      "id": "E20",
+      "tipo": "Entrega",
+      "titulo": "Participación ciudadana",
+      "fecha": "2026-10-20"
+    }
+  ]
+}

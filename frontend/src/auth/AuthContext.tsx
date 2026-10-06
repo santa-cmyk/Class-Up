@@ -177,34 +177,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, [applyToken, exchangeSessionId]);
 
-  const signIn = useCallback(async () => {
-    const redirectUrl =
-      Platform.OS === "web" ? `${window.location.origin}/` : Linking.createURL("");
-    const authUrl = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(redirectUrl)}`;
-
-    if (Platform.OS === "web") {
-      window.location.href = authUrl;
-      return;
-    }
-
-    try {
-      const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUrl);
-      let sid: string | null = null;
-      if (result.type === "success" && "url" in result) {
-        sid = extractSessionId((result as any).url);
-      }
-      if (!sid) {
-        // Fallbacks (Android dismiss)
-        try {
-          const initial = await Linking.getInitialURL();
-          sid = extractSessionId(initial);
-        } catch {}
-      }
-      if (sid) await exchangeSessionId(sid);
-    } catch (e) {
-      console.warn("signIn error", e);
-    }
-  }, [exchangeSessionId]);
+const signIn = useCallback(async () => {
+  try {
+    const res = await api.post<{ session_token: string; user: StudentUser }>(
+      "/auth/dev-login",
+    );
+    await applyToken(res.session_token, res.user);
+  } catch (e) {
+    console.warn("dev login error", e);
+  }
+}, [applyToken]);
 
   const signOut = useCallback(async () => {
     try {
