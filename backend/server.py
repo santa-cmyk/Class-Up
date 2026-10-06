@@ -23,7 +23,7 @@ load_dotenv(ROOT_DIR / ".env")
 # ---------------------------------------------------------------------------
 # Mongo
 # ---------------------------------------------------------------------------
-mongo_url = os.environ["MONGO_URL"]
+mongo_url = os.environ["MONGO_URL"].strip().strip('"').strip("'")
 mongo_client = AsyncIOMotorClient(mongo_url)
 db = mongo_client[os.environ["DB_NAME"]]
 
